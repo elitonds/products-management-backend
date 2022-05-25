@@ -2,5 +2,6 @@ export class CreateProductDto {
   code: string;
   name: string;
   price: number;
-  details: string;
+  detail: string;
+  categoryId: number;
 }

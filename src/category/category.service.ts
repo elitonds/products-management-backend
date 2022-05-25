@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { ExportProductsResponseDTO } from './dto/export/export-products-response.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
@@ -56,5 +57,11 @@ export class CategoryService {
     } catch (e) {
       Error(e);
     }
+  }
+
+  async exportProductsByCategoryCode(
+    code: string,
+  ): Promise<ExportProductsResponseDTO> {
+    return null;
   }
 }

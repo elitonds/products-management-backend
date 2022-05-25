@@ -32,11 +32,14 @@ export class Product {
   @Column({ length: 250 })
   name: string;
 
-  @Column()
+  @Column({ type: 'decimal' })
   price: number;
 
-  @Column()
+  @Column({ type: 'text' })
   detail: string;
+
+  @Column({ name: 'category_id', nullable: false })
+  categoryId: number;
 
   @OneToOne(() => Category)
   @JoinColumn({ name: 'category_id' })

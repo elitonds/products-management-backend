@@ -23,7 +23,7 @@ export class Category {
   @Column({ length: 8, unique: true })
   code: string;
 
-  @Column()
+  @Column({ length: 150 })
   name: string;
 
   @Column({ nullable: true })

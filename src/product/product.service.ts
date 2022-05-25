@@ -9,26 +9,53 @@ import { Product } from './entities/product.entity';
 export class ProductService {
   constructor(
     @InjectRepository(Product)
-    private readonly clientRepository: Repository<Product>,
+    private readonly productRepository: Repository<Product>,
   ) {}
 
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    try {
+      return await this.productRepository.save(createProductDto);
+    } catch (e) {
+      Error(e);
+    }
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll(): Promise<Product[]> {
+    try {
+      return await this.productRepository.find();
+    } catch (e) {
+      Error(e);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number): Promise<Product> {
+    try {
+      return await this.productRepository.findOneBy({ id });
+    } catch (e) {
+      Error(e);
+    }
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
+    try {
+      const product = await this.findOne(id);
+      product.name = updateProductDto.name;
+      product.detail = updateProductDto.details;
+      product.price = updateProductDto.price;
+      return await this.productRepository.save(product);
+    } catch (e) {
+      Error(e);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+    try {
+      return await this.productRepository.delete(id);
+    } catch (e) {
+      Error(e);
+    }
   }
 }

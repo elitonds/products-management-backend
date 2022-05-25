@@ -26,7 +26,7 @@ export class Product {
   })
   updateAt?: Date;
 
-  @Column({ length: 8 })
+  @Column({ length: 8, unique: true })
   code: string;
 
   @Column()

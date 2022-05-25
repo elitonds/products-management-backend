@@ -20,11 +20,14 @@ export class Category {
   })
   updateAt?: Date;
 
-  @Column({ length: 8 })
+  @Column({ length: 8, unique: true })
   code: string;
 
   @Column()
   name: string;
+
+  @Column({ nullable: true })
+  details: string;
 
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];

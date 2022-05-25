@@ -1,0 +1,31 @@
+import { Product } from 'src/product/entities/product.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class Category {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: true,
+  })
+  updateAt?: Date;
+
+  @Column({ length: 8 })
+  code: string;
+
+  @Column()
+  name: string;
+
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
+}

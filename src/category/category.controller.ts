@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
@@ -29,8 +30,8 @@ export class CategoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Category> {
-    return await this.categoryService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<Category> {
+    return await this.categoryService.findOne(id);
   }
 
   @Patch(':id')
@@ -44,5 +45,12 @@ export class CategoryController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
+  }
+
+  @Post('import-content')
+  async importProductsByCategory(
+    @Body() categoryContent: ImportCategoryContentDto,
+  ) {
+    return await this.categoryService.importCategoryContent(categoryContent);
   }
 }

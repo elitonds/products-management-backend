@@ -16,7 +16,7 @@ export class ProductService {
     try {
       return await this.productRepository.save(createProductDto);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -24,7 +24,7 @@ export class ProductService {
     try {
       return await this.productRepository.find();
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -32,7 +32,7 @@ export class ProductService {
     try {
       return await this.productRepository.findOneBy({ id });
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -47,7 +47,7 @@ export class ProductService {
       product.price = updateProductDto.price;
       return await this.productRepository.save(product);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -55,7 +55,22 @@ export class ProductService {
     try {
       return await this.productRepository.delete(id);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
+    }
+  }
+
+  async exportProductsByCategory(id: number): Promise<Product[]> {
+    try {
+      const category = await this.productRepository
+        .createQueryBuilder('p')
+        .leftJoinAndSelect('p.category', 'c')
+        .select(['p.id', 'p.name', 'p.price', 'p.detail'])
+        .where('c.id = :category_id')
+        .setParameters({ category_id: id })
+        .getMany();
+      return category;
+    } catch (e) {
+      throw new Error(e);
     }
   }
 }

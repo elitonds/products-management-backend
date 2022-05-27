@@ -3,6 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -38,10 +40,10 @@ export class Product {
   @Column({ type: 'text' })
   detail: string;
 
-  @Column({ name: 'category_id', nullable: false })
+  @Column({ name: 'category_id' })
   categoryId: number;
 
-  @OneToOne(() => Category)
+  @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'category_id' })
   category: Category;
 }

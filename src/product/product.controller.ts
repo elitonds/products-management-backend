@@ -40,7 +40,14 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.productService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return await this.productService.remove(id);
+  }
+
+  @Get('export-products/:id')
+  async findProductsByCategory(
+    @Param('id') categoryId: number,
+  ): Promise<Product[]> {
+    return await this.productService.exportProductsByCategory(categoryId);
   }
 }

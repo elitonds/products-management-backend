@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from 'src/product/entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { ExportProductsResponseDTO } from './dto/export/export-products-response.dto';
+import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
@@ -11,13 +12,15 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Product)
+    private readonly productRepository: Repository<Product>,
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     try {
       return await this.categoryRepository.save(createCategoryDto);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -25,7 +28,7 @@ export class CategoryService {
     try {
       return await this.categoryRepository.find();
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -33,7 +36,7 @@ export class CategoryService {
     try {
       return await this.categoryRepository.findOneBy({ id });
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -47,7 +50,7 @@ export class CategoryService {
       category.details = updateCategoryDto.details;
       return await this.categoryRepository.save(category);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
@@ -55,13 +58,28 @@ export class CategoryService {
     try {
       return await this.categoryRepository.delete(id);
     } catch (e) {
-      Error(e);
+      throw new Error(e);
     }
   }
 
-  async exportProductsByCategoryCode(
-    code: string,
-  ): Promise<ExportProductsResponseDTO> {
-    return null;
+  async importCategoryContent(data: ImportCategoryContentDto) {
+    try {
+      const category = await this.categoryRepository.findOneBy({
+        code: data.code,
+      });
+      const { code, name, details } = data;
+      const importCategory = category
+        ? category
+        : await this.create({ code, name, details });
+
+      if (data.products?.length) {
+        data.products.forEach(async (product) => {
+          product.categoryId = importCategory.id;
+          await this.productRepository.save(product);
+        });
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 }

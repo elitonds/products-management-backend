@@ -61,14 +61,13 @@ export class ProductService {
 
   async exportProductsByCategory(id: number): Promise<Product[]> {
     try {
-      const category = await this.productRepository
+      const products = await this.productRepository
         .createQueryBuilder('p')
-        .leftJoinAndSelect('p.category', 'c')
         .select(['p.id', 'p.name', 'p.price', 'p.detail'])
-        .where('c.id = :category_id')
-        .setParameters({ category_id: id })
+        .where('p.category_id = :categoryId')
+        .setParameters({ categoryId: id })
         .getMany();
-      return category;
+      return products;
     } catch (e) {
       throw new Error(e);
     }

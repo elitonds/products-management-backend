@@ -72,14 +72,34 @@ export class CategoryService {
         ? category
         : await this.create({ code, name, details });
 
-      if (data.products?.length) {
-        data.products.forEach(async (product) => {
-          product.categoryId = importCategory.id;
-          await this.productRepository.save(product);
+      const { products } = data;
+
+      if (products?.length) {
+        await products.forEach(async (product) => {
+          const existentProduct = await this.productExists(product.code);
+          if (existentProduct) return product;
+          else {
+            try {
+              product.categoryId = importCategory.id;
+              await this.productRepository.save(product);
+            } catch (e) {
+              throw new Error(e);
+            }
+          }
         });
       }
     } catch (e) {
       throw new Error(e);
     }
+  }
+
+  private async productExists(code: string) {
+    const product = await this.productRepository
+      .createQueryBuilder('p')
+      .select(['p.id'])
+      .where('p.code = :code')
+      .setParameters({ code })
+      .getOne();
+    return product;
   }
 }

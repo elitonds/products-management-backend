@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/product/entities/product.entity';
+import { Product } from '../product/entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import { CommonPaginatedResult } from 'src/common/common-paginated-result';
 
 @Injectable()
 export class CategoryService {
@@ -24,9 +25,18 @@ export class CategoryService {
     }
   }
 
-  async findAll(): Promise<Category[]> {
+  async findAll(take = 10, skip = 0): Promise<CommonPaginatedResult> {
     try {
-      return await this.categoryRepository.find();
+      const categories = await this.categoryRepository.findAndCount({
+        take,
+        skip,
+        order: {
+          code: 'ASC',
+        },
+      });
+      if (categories && categories[0].length) {
+        return { data: categories[0], total: categories[1] };
+      }
     } catch (e) {
       throw new Error(e);
     }
@@ -47,7 +57,7 @@ export class CategoryService {
     try {
       const category = await this.findOne(id);
       category.name = updateCategoryDto.name;
-      category.details = updateCategoryDto.details;
+      category.details = updateCategoryDto.detail;
       return await this.categoryRepository.save(category);
     } catch (e) {
       throw new Error(e);
@@ -70,15 +80,14 @@ export class CategoryService {
       const { code, name, details } = data;
       const importCategory = category
         ? category
-        : await this.create({ code, name, details });
+        : await this.create({ code, name, detail: details });
 
       const { products } = data;
 
       if (products?.length) {
         await products.forEach(async (product) => {
           const existentProduct = await this.productExists(product.code);
-          if (existentProduct) return product;
-          else {
+          if (!existentProduct) {
             try {
               product.categoryId = importCategory.id;
               await this.productRepository.save(product);
@@ -93,13 +102,17 @@ export class CategoryService {
     }
   }
 
-  private async productExists(code: string) {
-    const product = await this.productRepository
-      .createQueryBuilder('p')
-      .select(['p.id'])
-      .where('p.code = :code')
-      .setParameters({ code })
-      .getOne();
-    return product;
+  async productExists(code: string) {
+    try {
+      const product = await this.productRepository
+        .createQueryBuilder('p')
+        .select(['p.id'])
+        .where('p.code = :code')
+        .setParameters({ code })
+        .getOne();
+      return product;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 }

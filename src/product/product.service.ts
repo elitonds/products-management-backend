@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CommonPaginatedResult } from 'src/common/common-paginated-result';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -20,9 +21,18 @@ export class ProductService {
     }
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(take = 10, skip = 0): Promise<CommonPaginatedResult> {
     try {
-      return await this.productRepository.find();
+      const products = await this.productRepository.findAndCount({
+        take,
+        skip,
+        order: {
+          code: 'ASC',
+        },
+      });
+      if (products && products[0].length) {
+        return { data: products[0], total: products[1] };
+      }
     } catch (e) {
       throw new Error(e);
     }

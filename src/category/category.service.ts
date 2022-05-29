@@ -35,7 +35,11 @@ export class CategoryService {
         },
       });
       if (categories && categories[0].length) {
-        return { data: categories[0], total: categories[1] };
+        return {
+          data: categories[0],
+          totalResults: categories[1],
+          totalPages: categories[1] > take ? categories[1] % take : 1,
+        };
       }
     } catch (e) {
       throw new Error(e);

@@ -31,7 +31,11 @@ export class ProductService {
         },
       });
       if (products && products[0].length) {
-        return { data: products[0], total: products[1] };
+        return {
+          data: products[0],
+          totalResults: products[1],
+          totalPages: products[1] > take ? products[1] % take : 1,
+        };
       }
     } catch (e) {
       throw new Error(e);

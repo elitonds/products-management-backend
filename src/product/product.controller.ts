@@ -31,8 +31,10 @@ export class ProductController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(@Query() { take, skip }): Promise<CommonPaginatedResult> {
-    return await this.productService.findAll(take, skip);
+  async findAll(
+    @Query() { search, take, skip },
+  ): Promise<CommonPaginatedResult> {
+    return await this.productService.findAll(search, take, skip);
   }
 
   @Get(':id')

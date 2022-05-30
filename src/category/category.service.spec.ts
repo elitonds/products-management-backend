@@ -134,10 +134,10 @@ describe('CategoryService', () => {
   });
 
   it('should find all categories', async () => {
-    const categories = await service.findAll();
+    const categories = await service.findAll('');
     expect(categoryRepositoryStub.findAndCount.calledOnce).toBe(true);
     expect(categories).toBeDefined();
-    expect(categories.data.length).toBe(1);
+    expect(categories.dataSource.length).toBe(1);
   });
 
   it('should find category by id', async () => {

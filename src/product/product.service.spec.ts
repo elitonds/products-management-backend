@@ -98,7 +98,7 @@ describe('ProductService', () => {
     const categories = await service.findAll();
     expect(productRepositoryStub.findAndCount.calledOnce).toBe(true);
     expect(categories).toBeDefined();
-    expect(categories.data.length).toBe(1);
+    expect(categories.dataSource.length).toBe(1);
   });
 
   it('should find product by id', async () => {

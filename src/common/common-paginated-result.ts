@@ -1,5 +1,5 @@
 export class CommonPaginatedResult {
-  data: any;
+  dataSource: any;
   totalResults: number;
   totalPages: number;
 }

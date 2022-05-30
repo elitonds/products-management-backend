@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../product/entities/product.entity';
-import { Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -25,7 +25,11 @@ export class CategoryService {
     }
   }
 
-  async findAll(take = 10, skip = 0): Promise<CommonPaginatedResult> {
+  async findAll(
+    search = '',
+    take = 10,
+    skip = 0,
+  ): Promise<CommonPaginatedResult> {
     try {
       const categories = await this.categoryRepository.findAndCount({
         take,
@@ -33,12 +37,15 @@ export class CategoryService {
         order: {
           code: 'ASC',
         },
+        where: search.trim() ? { name: ILike(`%${search}%`) } : {},
       });
       if (categories && categories[0].length) {
+        const data = categories[0];
+        const totalResults = categories[1];
         return {
-          data: categories[0],
-          totalResults: categories[1],
-          totalPages: categories[1] > take ? categories[1] % take : 1,
+          dataSource: data,
+          totalResults: totalResults,
+          totalPages: totalResults > take ? Math.ceil(totalResults / take) : 1,
         };
       }
     } catch (e) {

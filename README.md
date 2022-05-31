@@ -40,7 +40,7 @@ $ npm run test ou yarn test
 # test coverage
 $ npm run test:cov ou yarn test --coverage
 ```
-- OBS: assim como por meio do Docker a aplicação também rodará no caminho padrão [Localhost](http://localhost:5000)
+- OBS: assim como por meio do Docker a aplicação também rodará no caminho padrão [http://localhost:5000/api/v1/](http://localhost:5000/api/v1/)
 
 ### Testes da API
 

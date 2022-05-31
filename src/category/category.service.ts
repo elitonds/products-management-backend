@@ -7,6 +7,7 @@ import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { CommonPaginatedResult } from 'src/common/common-paginated-result';
+import { SelectCategoryDto } from './dto/select-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -25,7 +26,7 @@ export class CategoryService {
     }
   }
 
-  async findAll(
+  async findAllPaginated(
     search = '',
     take = 10,
     skip = 0,
@@ -53,6 +54,23 @@ export class CategoryService {
     }
   }
 
+  async findAll(): Promise<SelectCategoryDto[]> {
+    try {
+      const categories = await this.categoryRepository.find({
+        order: {
+          name: 'ASC',
+        },
+        select: ['id', 'name'],
+      });
+      return categories.map((category) => {
+        const { id, code, name } = category;
+        return { id, code, name };
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async findOne(id: number): Promise<Category> {
     try {
       return await this.categoryRepository.findOneBy({ id });
@@ -68,7 +86,7 @@ export class CategoryService {
     try {
       const category = await this.findOne(id);
       category.name = updateCategoryDto.name;
-      category.details = updateCategoryDto.detail;
+      category.details = updateCategoryDto.details;
       return await this.categoryRepository.save(category);
     } catch (e) {
       throw new Error(e);
@@ -91,7 +109,7 @@ export class CategoryService {
       const { code, name, details } = data;
       const importCategory = category
         ? category
-        : await this.create({ code, name, detail: details });
+        : await this.create({ code, name, details });
 
       const { products } = data;
 

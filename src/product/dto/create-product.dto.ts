@@ -17,7 +17,7 @@ export class CreateProductDto {
   price: number;
 
   @IsNotEmpty({ message: 'O detalhe do produto não pode ser nulo' })
-  detail: string;
+  details: string;
 
   @IsNotEmpty({ message: 'A ID da categoria não pode ser nulo' })
   categoryId: number;

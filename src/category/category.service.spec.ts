@@ -17,6 +17,7 @@ describe('CategoryService', () => {
 
   let categoryRepositoryStub: {
     save: sinon.SinonStub;
+    find: sinon.SinonStub;
     findAndCount: sinon.SinonStub;
     findOneBy: sinon.SinonStub;
     delete: sinon.SinonStub;
@@ -46,7 +47,7 @@ describe('CategoryService', () => {
     price: 20,
     categoryId: 1,
     category: {} as Category,
-    detail: 'Detalhe',
+    details: 'Detalhe',
   };
 
   const allCategoriesMock: Category[] = [categoryCreatedMock];
@@ -54,7 +55,7 @@ describe('CategoryService', () => {
   const updateCategoryMock: UpdateCategoryDto = {
     ...createCategoryDtoMock,
   };
-  updateCategoryMock.detail = 'Detalhes da categoria';
+  updateCategoryMock.details = 'Detalhes da categoria';
 
   const importCategoryMock: ImportCategoryContentDto = {
     code: createCategoryDtoMock.code,
@@ -65,6 +66,7 @@ describe('CategoryService', () => {
     categoryRepositoryStub = {
       save: sinon.stub(),
       findAndCount: sinon.stub(),
+      find: sinon.stub(),
       findOneBy: sinon.stub(),
       delete: sinon.stub(),
     };
@@ -96,6 +98,9 @@ describe('CategoryService', () => {
     });
     categoryRepositoryStub.findAndCount = sinon.stub().callsFake(() => {
       return [allCategoriesMock, allCategoriesMock.length];
+    });
+    categoryRepositoryStub.find = sinon.stub().callsFake(() => {
+      return allCategoriesMock;
     });
     categoryRepositoryStub.findOneBy = sinon.stub().callsFake(() => {
       return categoryCreatedMock;
@@ -134,7 +139,14 @@ describe('CategoryService', () => {
   });
 
   it('should find all categories', async () => {
-    const categories = await service.findAll('');
+    const categories = await service.findAll();
+    expect(categoryRepositoryStub.find.calledOnce).toBe(true);
+    expect(categories).toBeDefined();
+    expect(categories.length).toBe(1);
+  });
+
+  it('should find all categories paginated', async () => {
+    const categories = await service.findAllPaginated('');
     expect(categoryRepositoryStub.findAndCount.calledOnce).toBe(true);
     expect(categories).toBeDefined();
     expect(categories.dataSource.length).toBe(1);

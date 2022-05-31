@@ -64,7 +64,7 @@ export class ProductService {
     try {
       const product = await this.findOne(id);
       product.name = updateProductDto.name;
-      product.detail = updateProductDto.detail;
+      product.details = updateProductDto.details;
       product.price = updateProductDto.price;
       return await this.productRepository.save(product);
     } catch (e) {

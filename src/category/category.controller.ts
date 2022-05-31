@@ -16,6 +16,7 @@ import { CommonPaginatedResult } from 'src/common/common-paginated-result';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ImportCategoryContentDto } from './dto/create-complete-category.dto';
+import { SelectCategoryDto } from './dto/select-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
@@ -34,10 +35,16 @@ export class CategoryController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(
+  async findAllPaginated(
     @Query() { search, take, skip },
   ): Promise<CommonPaginatedResult> {
-    return await this.categoryService.findAll(search, take, skip);
+    return await this.categoryService.findAllPaginated(search, take, skip);
+  }
+
+  @Get('/select')
+  @HttpCode(HttpStatus.OK)
+  async findAll(): Promise<SelectCategoryDto[]> {
+    return await this.categoryService.findAll();
   }
 
   @Get(':id')

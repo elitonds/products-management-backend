@@ -24,7 +24,7 @@ describe('ProductService', () => {
     code: '12345678',
     name: 'Test',
     categoryId: 1,
-    detail: 'Detalhe produto',
+    details: 'Detalhe produto',
     price: 25,
   };
 
@@ -35,7 +35,7 @@ describe('ProductService', () => {
     createdAt: new Date(),
     category: {} as Category,
     categoryId: 1,
-    detail: 'Detalhe do produto',
+    details: 'Detalhe do produto',
     price: 20,
   };
 

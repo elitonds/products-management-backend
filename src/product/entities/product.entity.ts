@@ -36,7 +36,7 @@ export class Product {
   price: number;
 
   @Column({ type: 'text' })
-  detail: string;
+  details: string;
 
   @Column({ name: 'category_id' })
   categoryId: number;

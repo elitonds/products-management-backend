@@ -1,15 +1,21 @@
 version: '3.7'
 services:
-  postgres:
-    image: postgres:10.5
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=products-management-db
-    logging:
-      options:
-        max-size: 10m
-        max-file: '3'
+  api:
+    build: .
     ports:
-      - '5454:5432'
+      - ${PORT}:${PORT}
+    volumes:
+      - .:/home/api
+      - /home/api/node_modules
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+  database:
+    container_name: nest_db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - '${POSTGRES_PORT}:5432'

@@ -1,73 +1,49 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Descrição
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Aplicação de controle de produtos construída com 
+[Nest](https://github.com/nestjs/nest) framework
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## A aplicação pode ser iniciada de duas maneiras localmente:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Via  Docker
+  - Pré-requisitos:
+    - Configurar seu arquivo [.env](./.env), o projeto já conta com um exemplo a ser seguido [.env.example](./.env.example)
+    - Ter o [Docker](https://www.docker.com/) e [Docker-compose](https://docs.docker.com/compose/) instalados e configurados em sua máquina
 
-## Installation
+  - Excecutar na raíz do projeto o comando **docker-compose up**
+  - A aplicação rodará no caminho padrão [Localhost](http://localhost:5000)
 
+### Via linha de comando na raíz do projeto seguindo os passos abaixo:
 ```bash
-$ npm install
-```
+#instalação de dependências
+$ npm install ou yarn
 
-## Running the app
-
-```bash
+#iniciando a aplicação
 # development
-$ npm run start
+$ npm run start ou yarn start
 
 # watch mode
-$ npm run start:dev
+$ npm run start:dev ou yarn start:dev
 
 # production mode
-$ npm run start:prod
-```
+$ npm run start:prod ou yarn start:prod
+ ```
 
-## Test
+
+### Testes unitários
 
 ```bash
 # unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
+$ npm run test ou yarn test
 
 # test coverage
-$ npm run test:cov
+$ npm run test:cov ou yarn test --coverage
 ```
+- OBS: assim como por meio do Docker a aplicação também rodará no caminho padrão [Localhost](http://localhost:5000)
 
-## Support
+### Testes da API
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- O projeto conta com um [arquivo](./endpoints-insomnia.json) de import para o [Insomnia](https://insomnia.rest/download) para realização dos testes dos endpoints.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Também pode ser testado via [Swagger](http://localhost:5000/swagger/), apenas com a aplicação rodando por linha de comando

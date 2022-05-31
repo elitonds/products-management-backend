@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CommonPaginatedResult } from 'src/common/common-paginated-result';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -20,6 +21,7 @@ import { SelectCategoryDto } from './dto/select-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
+@ApiTags('Category')
 @Controller('category')
 @UsePipes(ValidationPipe)
 export class CategoryController {

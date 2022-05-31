@@ -12,7 +12,7 @@ Aplicação de controle de produtos construída com
     - Ter o [Docker](https://www.docker.com/) e [Docker-compose](https://docs.docker.com/compose/) instalados e configurados em sua máquina
 
   - Excecutar na raíz do projeto o comando **docker-compose up**
-  - A aplicação rodará no caminho padrão [Localhost](http://localhost:5000)
+  - A aplicação rodará no caminho padrão [http://localhost:5000/api/v1/](http://localhost:5000/api/v1/)
 
 ### Via linha de comando na raíz do projeto seguindo os passos abaixo:
 ```bash
